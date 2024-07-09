@@ -4,10 +4,10 @@ pragma solidity ^0.8.24;
 
 import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-contract MerkleAidrop {
+contract MerkleAirdrop {
     using SafeERC20 for IERC20;
 
-    error MerkleAidrop__InvalidProof();
+    error MerkleAirdrop__InvalidProof();
     error MerkleAirdrop__AlreadyClaimed();
     address[] claimers;
     bytes32 private immutable i_merkleRoot;
@@ -28,7 +28,7 @@ contract MerkleAidrop {
 
         bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(account,amount))));
         if(!MerkleProof.verify(merkleProof, i_merkleRoot, leaf)){
-            revert MerkleAidrop__InvalidProof();
+            revert MerkleAirdrop__InvalidProof();
         }
 
         s_hasClaimed[account] = true;
