@@ -4,8 +4,8 @@ pragma solidity ^0.8.24;
 
 import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import {EIP712} from "@openzeppelin/contracts/utils?cryptography/EIP712.sol";
-import {ECDSA} from "@openzeppelin/contracts/utils?cryptography/ECDSA.sol";
+import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 contract MerkleAirdrop is EIP712{
     using SafeERC20 for IERC20;
 
@@ -21,7 +21,7 @@ contract MerkleAirdrop is EIP712{
     struct AirdropClaim{
         address account;
         uint256 amount;
-    };
+    }
 
     event Claim(address account, uint256 amount);
 
@@ -50,7 +50,7 @@ contract MerkleAirdrop is EIP712{
     }
 
     function getMessage(address account, uint256 amount) public view returns(bytes32){
-        return _hashTypedDatav4(keccak256(abi.encode(MESSAGE_TYPEHASH, AirdropClaim({account: account, amount: amount}))));
+        return _hashTypedDataV4(keccak256(abi.encode(MESSAGE_TYPEHASH, AirdropClaim({account: account, amount: amount}))));
     }
 
     function getMerkleRoot() external view returns(bytes32){
@@ -61,7 +61,7 @@ contract MerkleAirdrop is EIP712{
         return i_aidropToken;
     }
 
-    function _isValidSignature(address account, bytes32 digest, uint8 r, bytes32 r, bytes32 s) internal pure returns(bool){
+    function _isValidSignature(address account, bytes32 digest, uint8 v, bytes32 r, bytes32 s) internal pure returns(bool){
         (address actualSigner,,) = ECDSA.tryRecover(digest, v, r, s);
         return actualSigner == account;
     }
